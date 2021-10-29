@@ -6,75 +6,31 @@
       title="Task Tracker"
       :is-show-add-task-form="isShowAddTaskForm"
     />
-    <div v-if="isShowAddTaskForm">
-      <TaskForm @new-task="onAddNewTask" />
-    </div>
-    <TaskList
-      @toggle-reminder="onToggleReminder"
-      @delete-task="onDeleteTask"
-      :tasks="tasks"
-    />
+    <router-view :isShowAddTaskForm="isShowAddTaskForm"></router-view>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from './components/Header';
-import TaskList from './components/TaskList';
-import TaskForm from './components/TaskForm';
+import Footer from './components/Footer'
 
 export default {
   name: 'App',
   components: {
-    TaskList,
     Header,
-    TaskForm,
+    Footer
   },
   data() {
     return {
-      tasks: [],
       isShowAddTaskForm: false,
     };
   },
   methods: {
-    onDeleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id);
-    },
-    onToggleReminder(id) {
-      console.log('reminder', id);
-      this.tasks = this.tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
-      );
-    },
-    onAddNewTask(newTask) {
-      console.log('new-task', newTask);
-      this.tasks.push(newTask);
-    },
     toggleAddTask() {
       this.isShowAddTaskForm = !this.isShowAddTaskForm;
     },
     reloadAllTasks() {},
-  },
-  created() {
-    this.tasks = [
-      {
-        id: 1,
-        text: 'Meet doctor',
-        day: 'Oct 25, 2021',
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: 'Meet plumber',
-        day: 'Oct 25, 2021',
-        reminder: false,
-      },
-      {
-        id: 3,
-        text: 'Sleep',
-        day: 'Oct 25, 2021',
-        reminder: false,
-      },
-    ];
   },
 };
 </script>
